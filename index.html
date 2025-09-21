@@ -33,14 +33,14 @@
         .form-row {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 16px; /* Увеличено на 5% с 15px */
             flex-wrap: nowrap;
         }
         label {
             font-weight: bold;
             color: #333;
             white-space: nowrap;
-            margin-right: 15px; /* Увеличен отступ для предотвращения наслаивания */
+            margin-right: 15px;
             flex-shrink: 0;
             width: 150px;
             background-color: #e6e6e6;
@@ -55,6 +55,12 @@
             box-sizing: border-box;
             font-size: 14px;
         }
+        #date {
+            width: 135px; /* Уменьшено на 10% с предполагаемых 150px */
+        }
+        #unit {
+            width: 135px; /* Уменьшено на 10% с предполагаемых 150px */
+        }
         .number-input-container {
             display: flex;
             align-items: center;
@@ -63,7 +69,7 @@
         }
         .number-input-container select, .number-input-container input {
             flex-grow: 1;
-            width: 14px; /* Уменьшено с 18px */
+            width: 13px; /* Уменьшено на 10% с 14px */
         }
         button {
             padding: 8px 12px;
@@ -79,7 +85,7 @@
             background-color: #0056b3;
         }
         .increment-btn, .decrement-btn {
-            width: 40px; /* Увеличено на 10% с 36px */
+            width: 40px;
             height: 40px;
             display: flex;
             justify-content: center;
@@ -115,7 +121,13 @@
                 width: 100px;
                 background-color: #e6e6e6;
                 padding: 6px;
-                margin-right: 12px; /* Увеличен отступ для мобильных */
+                margin-right: 12px;
+            }
+            #date {
+                width: 108px; /* Уменьшено на 10% с предполагаемых 120px */
+            }
+            #unit {
+                width: 108px; /* Уменьшено на 10% с предполагаемых 120px */
             }
             .form-row {
                 flex-wrap: nowrap;
@@ -124,10 +136,10 @@
                 gap: 3px;
             }
             .number-input-container select, .number-input-container input {
-                width: 12px; /* Уменьшено с 14px */
+                width: 11px; /* Уменьшено на 10% с 12px */
             }
             .increment-btn, .decrement-btn {
-                width: 33px; /* Увеличено на 10% с 30px */
+                width: 33px;
                 height: 33px;
             }
         }
@@ -136,13 +148,19 @@
                 width: 80px;
                 font-size: 12px;
                 padding: 5px;
-                margin-right: 10px; /* Слегка уменьшен отступ для узких экранов */
+                margin-right: 10px;
+            }
+            #date {
+                width: 90px; /* Адаптация для узких экранов */
+            }
+            #unit {
+                width: 90px; /* Адаптация для узких экранов */
             }
             .form-row {
-                flex-wrap: wrap; /* Разрешаем перенос на очень узких экранах */
+                flex-wrap: wrap;
             }
             .number-input-container select, .number-input-container input {
-                width: 12px;
+                width: 11px;
             }
             .increment-btn, .decrement-btn {
                 width: 33px;
@@ -151,8 +169,14 @@
         }
         @media (max-width: 320px) {
             label {
-                width: 70px; /* Ещё меньше для экранов <320px */
+                width: 70px;
                 font-size: 11px;
+            }
+            #date {
+                width: 80px; /* Ещё меньше для экранов <320px */
+            }
+            #unit {
+                width: 80px; /* Ещё меньше для экранов <320px */
             }
         }
     </style>
@@ -266,7 +290,7 @@
             </div>
             
             <div class="form-row">
-                <label for="feverish">Температурят:</label>
+                <label for="feverish">Температурящих:</label>
                 <div class="number-input-container">
                     <select id="feverish" name="feverish" required>
                         <option value="0">0</option>
@@ -318,7 +342,7 @@
             </div>
             
             <div class="form-row">
-                <label for="compulsory">Принуд. лечение:</label>
+                <label for="compulsory">Принуд.лечение:</label>
                 <div class="number-input-container">
                     <select id="compulsory" name="compulsory" required>
                         <option value="0">0</option>
