@@ -1,0 +1,123 @@
+<!-- Summary form HTML (save as summary_form.html and host on GitHub) -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Свод отчета</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        pre#reports {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .red-text {
+            color: red;
+        }
+        @media (max-width: 600px) {
+            pre#reports {
+                padding: 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <pre id="reports">Обновление данных...</pre>
+    
+    <script>
+        const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbwK4O9pNAhfehcgBuZDLMzS6cXvhxYsEt5GXvtxLZ3mBVz9wK9CwKyxXbE-IbUea8H8/exec';
+
+        // Функция для форматирования даты в ДД.ММ.ГГГГ
+        function formatDateToDDMMYYYY(dateStr) {
+            const date = new Date(dateStr);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+
+        // Получаем сегодняшнюю дату в формате YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
+
+        fetch(appsScriptUrl)
+        .then(response => response.json())
+        .then(data => {
+            const div = document.getElementById('reports');
+            let totalConsists = 0;
+            let totalIncome = 0;
+            let totalOutcome = 0;
+            let totalSevere = 0;
+            let totalFeverish = 0;
+            let totalFatal = 0;
+            let totalCompulsory = 0;
+            let totalDangerous = 0;
+            let allDatesToday = true;
+
+            // Проверяем, все ли даты сегодняшние
+            for (let row of data) {
+                if (row["Дата"] !== today) {
+                    allDatesToday = false;
+                    break;
+                }
+            }
+
+            let output = '';
+            if (allDatesToday) {
+                // Если все даты сегодняшние, добавляем заголовок ОЦПЗ
+                output += `ОЦПЗ: дата: ${formatDateToDDMMYYYY(today)}\n\n`;
+            }
+
+            // Формируем отчёты для каждого подразделения
+            data.forEach(row => {
+                const formattedDate = formatDateToDDMMYYYY(row["Дата"]);
+                const isToday = row["Дата"] === today;
+                const dateStyle = isToday ? '' : ' class="red-text"';
+                if (allDatesToday) {
+                    // Если все даты сегодняшние, убираем "Сообщение отправлено" и "дата"
+                    output += `подразделение: ${row["подразделение"]}\nсостоит: ${row["состоит"]}\nпоступило: ${row["поступило"]}\nвыписано: ${row["выбыло"]}\nтяжелых: ${row["тяжелых"]}\nтемпературящих: ${row["температурящих"]}\nлетальные: ${row["летальные"]}\nпринудительное лечение: ${row["принудительное лечение"]}\nсоциально опасные: ${row["социально опасные"]}\n\n`;
+                } else {
+                    // Если не все даты сегодняшние, показываем полные сообщения с цветом даты
+                    output += `Сообщение отправлено:\n<span${dateStyle}>дата: ${formattedDate}</span>\nподразделение: ${row["подразделение"]}\nсостоит: ${row["состоит"]}\nпоступило: ${row["поступило"]}\nвыписано: ${row["выбыло"]}\nтяжелых: ${row["тяжелых"]}\nтемпературящих: ${row["температурящих"]}\nлетальные: ${row["летальные"]}\nпринудительное лечение: ${row["принудительное лечение"]}\nсоциально опасные: ${row["социально опасные"]}\n\n`;
+                }
+                totalConsists += row["состоит"];
+                totalIncome += row["поступило"];
+                totalOutcome += row["выбыло"];
+                totalSevere += row["тяжелых"];
+                totalFeverish += row["температурящих"];
+                totalFatal += row["летальные"];
+                totalCompulsory += row["принудительное лечение"];
+                totalDangerous += row["социально опасные"];
+            });
+
+            // Добавляем итоги
+            output += `Всего:\nдата: ${formatDateToDDMMYYYY(today)}\nсостоит: ${totalConsists}\nпоступило: ${totalIncome}\nвыписано: ${totalOutcome}\nтяжелых: ${totalSevere}\nтемпературящих: ${totalFeverish}\nлетальные: ${totalFatal}\nпринудительное лечение: ${totalCompulsory}\nсоциально опасные: ${totalDangerous}`;
+
+            // Если не все даты сегодняшние, добавляем предупреждение красным
+            if (!allDatesToday) {
+                output += `\n\n<span class="red-text">Не все подразделения обновили информацию</span>`;
+            }
+
+            div.innerHTML = output;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('reports').innerText = 'Ошибка при загрузке данных';
+        });
+    </script>
+</body>
+</html>

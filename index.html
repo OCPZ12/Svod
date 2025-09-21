@@ -1,0 +1,420 @@
+<!-- User form HTML (save as user_form.html and host on GitHub) -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма отчета</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .number-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .number-input-container select, .number-input-container input {
+            flex-grow: 1;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .increment-btn, .decrement-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #submitBtn, #viewPrevBtn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        pre#response, pre#prevMessage {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            width: 100%;
+            max-width: 400px;
+        }
+        pre#prevMessage {
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            form, pre#response, pre#prevMessage {
+                padding: 15px;
+            }
+            input, select, button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="viewPrevBtn">Посмотреть прошлое сообщение</button>
+        <pre id="prevMessage"></pre>
+        <form id="reportForm">
+            <label for="date">Дата:</label>
+            <input type="date" id="date" name="date" required>
+            
+            <label for="unit">Подразделение:</label>
+            <select id="unit" name="unit" required>
+                <option value="Алексеевка">Алексеевка</option>
+                <option value="Степногорск">Степногорск</option>
+                <option value="Кокшетау">Кокшетау</option>
+                <option value="Селета">Селета</option>
+                <option value="Раздольное">Раздольное</option>
+            </select>
+            
+            <label for="consists">Состоит:</label>
+            <div class="number-input-container">
+                <input type="number" id="consists" name="consists" min="0" value="0" required>
+                <button type="button" class="decrement-btn" onclick="changeValue('consists', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('consists', 1)">+</button>
+            </div>
+            
+            <label for="income">Поступило:</label>
+            <div class="number-input-container">
+                <select id="income" name="income" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <button type="button" class="decrement-btn" onclick="changeValue('income', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('income', 1)">+</button>
+            </div>
+            
+            <label for="outcome">Выписано:</label>
+            <div class="number-input-container">
+                <select id="outcome" name="outcome" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <button type="button" class="decrement-btn" onclick="changeValue('outcome', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('outcome', 1)">+</button>
+            </div>
+            
+            <label for="severe">Тяжелых:</label>
+            <div class="number-input-container">
+                <select id="severe" name="severe" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <button type="button" class="decrement-btn" onclick="changeValue('severe', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('severe', 1)">+</button>
+            </div>
+            
+            <label for="feverish">Температурящих:</label>
+            <div class="number-input-container">
+                <select id="feverish" name="feverish" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <button type="button" class="decrement-btn" onclick="changeValue('feverish', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('feverish', 1)">+</button>
+            </div>
+            
+            <label for="fatal">Летальные:</label>
+            <div class="number-input-container">
+                <select id="fatal" name="fatal" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <button type="button" class="decrement-btn" onclick="changeValue('fatal', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('fatal', 1)">+</button>
+            </div>
+            
+            <label for="compulsory">Принудительное лечение:</label>
+            <div class="number-input-container">
+                <select id="compulsory" name="compulsory" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <button type="button" class="decrement-btn" onclick="changeValue('compulsory', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('compulsory', 1)">+</button>
+            </div>
+            
+            <label for="dangerous">Социально опасные:</label>
+            <div class="number-input-container">
+                <select id="dangerous" name="dangerous" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                </select>
+                <button type="button" class="decrement-btn" onclick="changeValue('dangerous', -1)">-</button>
+                <button type="button" class="increment-btn" onclick="changeValue('dangerous', 1)">+</button>
+            </div>
+            
+            <button type="submit" id="submitBtn">Отправить</button>
+        </form>
+        
+        <pre id="response"></pre>
+    </div>
+    
+    <script>
+        const appsScriptUrl = 'https://script.google.com/macros/s/AKfycbwK4O9pNAhfehcgBuZDLMzS6cXvhxYsEt5GXvtxLZ3mBVz9wK9CwKyxXbE-IbUea8H8/exec';
+        
+        // Функция для форматирования даты в ДД.ММ.ГГГГ
+        function formatDateToDDMMYYYY(dateStr) {
+            const date = new Date(dateStr);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}.${month}.${year}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            
+            const lastUnit = localStorage.getItem('lastUnit');
+            if (lastUnit) {
+                document.getElementById('unit').value = lastUnit;
+            }
+            
+            const lastConsists = localStorage.getItem('lastConsists');
+            if (lastConsists !== null) {
+                document.getElementById('consists').value = lastConsists;
+            }
+        });
+        
+        const form = document.getElementById('reportForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const respDiv = document.getElementById('response');
+            const prevMessageDiv = document.getElementById('prevMessage');
+            respDiv.innerText = 'Сообщение отправляется...';
+            prevMessageDiv.innerText = ''; // Сворачиваем прошлое сообщение
+            
+            const formData = new FormData(form);
+            const params = new URLSearchParams(formData);
+            
+            localStorage.setItem('lastUnit', document.getElementById('unit').value);
+            localStorage.setItem('lastConsists', document.getElementById('consists').value);
+            
+            fetch(appsScriptUrl, {
+                method: 'POST',
+                body: params
+            })
+            .then(response => response.text())
+            .then(text => {
+                if (text === 'OK') {
+                    const formattedDate = formatDateToDDMMYYYY(document.getElementById('date').value);
+                    respDiv.innerText = `Сообщение отправлено:\nдата: ${formattedDate}\nподразделение: ${document.getElementById('unit').value}\nсостоит: ${document.getElementById('consists').value}\nпоступило: ${document.getElementById('income').value}\nвыписано: ${document.getElementById('outcome').value}\nтяжелых: ${document.getElementById('severe').value}\nтемпературящих: ${document.getElementById('feverish').value}\nлетальные: ${document.getElementById('fatal').value}\nпринудительное лечение: ${document.getElementById('compulsory').value}\nсоциально опасные: ${document.getElementById('dangerous').value}`;
+                    respDiv.scrollIntoView({ behavior: 'smooth' }); // Смещаем фокус к низу формы
+                } else {
+                    respDiv.innerText = 'Ошибка при отправке сообщения';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                respDiv.innerText = 'Ошибка при отправке сообщения';
+            });
+        });
+        
+        const viewPrevBtn = document.getElementById('viewPrevBtn');
+        viewPrevBtn.addEventListener('click', () => {
+            const prevMessageDiv = document.getElementById('prevMessage');
+            prevMessageDiv.innerText = 'Загрузка данных...';
+            
+            const selectedUnit = document.getElementById('unit').value;
+            
+            fetch(appsScriptUrl)
+            .then(response => response.json())
+            .then(data => {
+                const row = data.find(row => row["подразделение"] === selectedUnit);
+                if (row) {
+                    // Корректируем дату с учётом часового пояса (+05:00)
+                    const rawDate = row["Дата"];
+                    let formattedDate;
+                    if (rawDate.includes('T')) {
+                        const date = new Date(rawDate);
+                        // Добавляем смещение +05:00 (5 часов = 5 * 60 * 60 * 1000 миллисекунд)
+                        date.setTime(date.getTime() + 5 * 60 * 60 * 1000);
+                        formattedDate = formatDateToDDMMYYYY(date);
+                    } else {
+                        // Если дата уже в формате YYYY-MM-DD
+                        formattedDate = formatDateToDDMMYYYY(rawDate);
+                    }
+                    prevMessageDiv.innerText = `Последнее сообщение:\nдата: ${formattedDate}\nподразделение: ${row["подразделение"]}\nсостоит: ${row["состоит"]}\nпоступило: ${row["поступило"]}\nвыписано: ${row["выбыло"]}\nтяжелых: ${row["тяжелых"]}\nтемпературящих: ${row["температурящих"]}\nлетальные: ${row["летальные"]}\nпринудительное лечение: ${row["принудительное лечение"]}\nсоциально опасные: ${row["социально опасные"]}`;
+                } else {
+                    prevMessageDiv.innerText = `Нет данных для подразделения ${selectedUnit}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                prevMessageDiv.innerText = 'Ошибка при загрузке данных';
+            });
+        });
+        
+        function changeValue(field, delta) {
+            const element = document.getElementById(field);
+            let val = parseInt(element.value) || 0;
+            val += delta;
+            if (val < 0) val = 0;
+            
+            // Для select элементов (income, outcome) динамически добавляем новую опцию, если значение > 15
+            if (element.tagName === 'SELECT' && val > 15) {
+                const existingOptions = Array.from(element.options).map(opt => parseInt(opt.value));
+                if (!existingOptions.includes(val)) {
+                    const newOption = document.createElement('option');
+                    newOption.value = val;
+                    newOption.text = val;
+                    element.appendChild(newOption);
+                }
+            }
+            
+            element.value = val;
+        }
+    </script>
+</body>
+</html>
