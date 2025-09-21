@@ -40,7 +40,7 @@
             font-weight: bold;
             color: #333;
             white-space: nowrap;
-            margin-right: 10px;
+            margin-right: 15px; /* Увеличен отступ для предотвращения наслаивания */
             flex-shrink: 0;
             width: 150px;
             background-color: #e6e6e6;
@@ -63,7 +63,7 @@
         }
         .number-input-container select, .number-input-container input {
             flex-grow: 1;
-            width: 18px; /* Уменьшено вдвое с 35px */
+            width: 14px; /* Уменьшено с 18px */
         }
         button {
             padding: 8px 12px;
@@ -79,8 +79,8 @@
             background-color: #0056b3;
         }
         .increment-btn, .decrement-btn {
-            width: 36px; /* Увеличено с 30px */
-            height: 36px;
+            width: 40px; /* Увеличено на 10% с 36px */
+            height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -115,6 +115,7 @@
                 width: 100px;
                 background-color: #e6e6e6;
                 padding: 6px;
+                margin-right: 12px; /* Увеличен отступ для мобильных */
             }
             .form-row {
                 flex-wrap: nowrap;
@@ -123,11 +124,11 @@
                 gap: 3px;
             }
             .number-input-container select, .number-input-container input {
-                width: 14px; /* Уменьшено вдвое с 28px */
+                width: 12px; /* Уменьшено с 14px */
             }
             .increment-btn, .decrement-btn {
-                width: 30px; /* Увеличено с 25px */
-                height: 30px;
+                width: 33px; /* Увеличено на 10% с 30px */
+                height: 33px;
             }
         }
         @media (max-width: 360px) {
@@ -135,6 +136,23 @@
                 width: 80px;
                 font-size: 12px;
                 padding: 5px;
+                margin-right: 10px; /* Слегка уменьшен отступ для узких экранов */
+            }
+            .form-row {
+                flex-wrap: wrap; /* Разрешаем перенос на очень узких экранах */
+            }
+            .number-input-container select, .number-input-container input {
+                width: 12px;
+            }
+            .increment-btn, .decrement-btn {
+                width: 33px;
+                height: 33px;
+            }
+        }
+        @media (max-width: 320px) {
+            label {
+                width: 70px; /* Ещё меньше для экранов <320px */
+                font-size: 11px;
             }
         }
     </style>
@@ -248,7 +266,7 @@
             </div>
             
             <div class="form-row">
-                <label for="feverish">Температурящих:</label>
+                <label for="feverish">Температурят:</label>
                 <div class="number-input-container">
                     <select id="feverish" name="feverish" required>
                         <option value="0">0</option>
