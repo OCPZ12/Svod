@@ -33,22 +33,22 @@
         .form-row {
             display: flex;
             align-items: center;
-            margin-bottom: 16px; /* Увеличено на 5% с 15px */
+            margin-bottom: 16px;
             flex-wrap: nowrap;
         }
         label {
             font-weight: bold;
             color: #333;
             white-space: nowrap;
-            margin-right: 15px;
+            margin-right: 10px;
             flex-shrink: 0;
-            width: 150px;
+            width: 180px; /* Увеличено на 20% с 150px */
             background-color: #e6e6e6;
             padding: 8px;
             border-radius: 5px;
+            box-sizing: border-box;
         }
         input, select {
-            flex-grow: 1;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -56,20 +56,21 @@
             font-size: 14px;
         }
         #date {
-            width: 135px; /* Уменьшено на 10% с предполагаемых 150px */
+            width: 135px;
         }
         #unit {
-            width: 135px; /* Уменьшено на 10% с предполагаемых 150px */
+            width: 135px;
         }
         .number-input-container {
             display: flex;
             align-items: center;
             gap: 5px;
             flex-grow: 1;
+            min-width: 0; /* Разрешаем сжатие */
         }
         .number-input-container select, .number-input-container input {
             flex-grow: 1;
-            width: 13px; /* Уменьшено на 10% с 14px */
+            min-width: 10px; /* Минимальная ширина для читаемости */
         }
         button {
             padding: 8px 12px;
@@ -118,25 +119,21 @@
                 font-size: 12px;
             }
             label {
-                width: 100px;
-                background-color: #e6e6e6;
+                width: 120px; /* Увеличено на 20% с 100px */
                 padding: 6px;
-                margin-right: 12px;
+                margin-right: 8px;
             }
             #date {
-                width: 108px; /* Уменьшено на 10% с предполагаемых 120px */
+                width: 108px;
             }
             #unit {
-                width: 108px; /* Уменьшено на 10% с предполагаемых 120px */
+                width: 108px;
             }
             .form-row {
                 flex-wrap: nowrap;
             }
             .number-input-container {
                 gap: 3px;
-            }
-            .number-input-container select, .number-input-container input {
-                width: 11px; /* Уменьшено на 10% с 12px */
             }
             .increment-btn, .decrement-btn {
                 width: 33px;
@@ -145,38 +142,31 @@
         }
         @media (max-width: 360px) {
             label {
-                width: 80px;
+                width: 96px; /* Увеличено на 20% с 80px */
                 font-size: 12px;
                 padding: 5px;
-                margin-right: 10px;
+                margin-right: 6px;
             }
             #date {
-                width: 90px; /* Адаптация для узких экранов */
+                width: 90px;
             }
             #unit {
-                width: 90px; /* Адаптация для узких экранов */
+                width: 90px;
             }
             .form-row {
                 flex-wrap: wrap;
             }
-            .number-input-container select, .number-input-container input {
-                width: 11px;
-            }
-            .increment-btn, .decrement-btn {
-                width: 33px;
-                height: 33px;
-            }
         }
         @media (max-width: 320px) {
             label {
-                width: 70px;
+                width: 84px; /* Увеличено на 20% с 70px */
                 font-size: 11px;
             }
             #date {
-                width: 80px; /* Ещё меньше для экранов <320px */
+                width: 80px;
             }
             #unit {
-                width: 80px; /* Ещё меньше для экранов <320px */
+                width: 80px;
             }
         }
     </style>
@@ -186,21 +176,21 @@
         <button id="viewPrevBtn">Посмотреть прошлое сообщение</button>
         <pre id="prevMessage"></pre>
         <form id="reportForm">
-            <div class="form-row">
-                <label for="date">Дата:</label>
-                <input type="date" id="date" name="date" required>
-            </div>
+           <div class="form-row">
+    <label for="date">Дата:</label>
+    <input type="date" id="date" name="date" required style="width: calc(100% - 190px);">
+</div>
             
-            <div class="form-row">
-                <label for="unit">Подразделение:</label>
-                <select id="unit" name="unit" required>
-                    <option value="Алексеевка">Алексеевка</option>
-                    <option value="Степногорск">Степногорск</option>
-                    <option value="Кокшетау">Кокшетау</option>
-                    <option value="Селета">Селета</option>
-                    <option value="Раздольное">Раздольное</option>
-                </select>
-            </div>
+<div class="form-row">
+    <label for="unit">Подразделение:</label>
+    <select id="unit" name="unit" required style="width: calc(100% - 190px);">
+        <option value="Алексеевка">Алексеевка</option>
+        <option value="Степногорск">Степногорск</option>
+        <option value="Кокшетау">Кокшетау</option>
+        <option value="Селета">Селета</option>
+        <option value="Раздольное">Раздольное</option>
+    </select>
+</div>
             
             <div class="form-row">
                 <label for="consists">Состоит:</label>
@@ -290,7 +280,7 @@
             </div>
             
             <div class="form-row">
-                <label for="feverish">Температурящих:</label>
+                <label for="feverish">Температурят:</label>
                 <div class="number-input-container">
                     <select id="feverish" name="feverish" required>
                         <option value="0">0</option>
