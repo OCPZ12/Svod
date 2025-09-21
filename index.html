@@ -30,36 +30,48 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
         }
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: nowrap;
+        }
         label {
-            display: block;
-            margin-bottom: 8px;
             font-weight: bold;
             color: #333;
+            white-space: nowrap;
+            margin-right: 10px;
+            flex-shrink: 0;
+            width: 150px;
+            background-color: #e6e6e6; /* Тёмный фон для надписей */
+            padding: 8px;
+            border-radius: 5px;
         }
         input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
+            flex-grow: 1;
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
-            font-size: 16px;
+            font-size: 14px;
         }
         .number-input-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
+            flex-grow: 1;
         }
         .number-input-container select, .number-input-container input {
             flex-grow: 1;
+            width: 35px; /* Уменьшено на 30% с 50px */
         }
         button {
-            padding: 10px 15px;
+            padding: 8px 12px;
             border: none;
             border-radius: 5px;
             background-color: #007bff;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -67,11 +79,12 @@
             background-color: #0056b3;
         }
         .increment-btn, .decrement-btn {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-shrink: 0;
         }
         #submitBtn, #viewPrevBtn {
             width: 100%;
@@ -96,7 +109,32 @@
                 padding: 15px;
             }
             input, select, button {
-                font-size: 14px;
+                font-size: 12px;
+            }
+            label {
+                width: 100px;
+                background-color: #e6e6e6; /* Тот же тёмный фон на мобильных */
+                padding: 6px;
+            }
+            .form-row {
+                flex-wrap: nowrap;
+            }
+            .number-input-container {
+                gap: 3px;
+            }
+            .number-input-container select, .number-input-container input {
+                width: 28px; /* Уменьшено на 30% с 40px */
+            }
+            .increment-btn, .decrement-btn {
+                width: 25px;
+                height: 25px;
+            }
+        }
+        @media (max-width: 360px) {
+            label {
+                width: 80px;
+                font-size: 12px;
+                padding: 5px;
             }
         }
     </style>
@@ -106,191 +144,211 @@
         <button id="viewPrevBtn">Посмотреть прошлое сообщение</button>
         <pre id="prevMessage"></pre>
         <form id="reportForm">
-            <label for="date">Дата:</label>
-            <input type="date" id="date" name="date" required>
-            
-            <label for="unit">Подразделение:</label>
-            <select id="unit" name="unit" required>
-                <option value="Алексеевка">Алексеевка</option>
-                <option value="Степногорск">Степногорск</option>
-                <option value="Кокшетау">Кокшетау</option>
-                <option value="Селета">Селета</option>
-                <option value="Раздольное">Раздольное</option>
-            </select>
-            
-            <label for="consists">Состоит:</label>
-            <div class="number-input-container">
-                <input type="number" id="consists" name="consists" min="0" value="0" required>
-                <button type="button" class="decrement-btn" onclick="changeValue('consists', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('consists', 1)">+</button>
+            <div class="form-row">
+                <label for="date">Дата:</label>
+                <input type="date" id="date" name="date" required>
             </div>
             
-            <label for="income">Поступило:</label>
-            <div class="number-input-container">
-                <select id="income" name="income" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
+            <div class="form-row">
+                <label for="unit">Подразделение:</label>
+                <select id="unit" name="unit" required>
+                    <option value="Алексеевка">Алексеевка</option>
+                    <option value="Степногорск">Степногорск</option>
+                    <option value="Кокшетау">Кокшетау</option>
+                    <option value="Селета">Селета</option>
+                    <option value="Раздольное">Раздольное</option>
                 </select>
-                <button type="button" class="decrement-btn" onclick="changeValue('income', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('income', 1)">+</button>
             </div>
             
-            <label for="outcome">Выписано:</label>
-            <div class="number-input-container">
-                <select id="outcome" name="outcome" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                </select>
-                <button type="button" class="decrement-btn" onclick="changeValue('outcome', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('outcome', 1)">+</button>
+            <div class="form-row">
+                <label for="consists">Состоит:</label>
+                <div class="number-input-container">
+                    <input type="number" id="consists" name="consists" min="0" value="0" required>
+                    <button type="button" class="decrement-btn" onclick="changeValue('consists', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('consists', 1)">+</button>
+                </div>
             </div>
             
-            <label for="severe">Тяжелых:</label>
-            <div class="number-input-container">
-                <select id="severe" name="severe" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                </select>
-                <button type="button" class="decrement-btn" onclick="changeValue('severe', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('severe', 1)">+</button>
+            <div class="form-row">
+                <label for="income">Поступило:</label>
+                <div class="number-input-container">
+                    <select id="income" name="income" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                    <button type="button" class="decrement-btn" onclick="changeValue('income', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('income', 1)">+</button>
+                </div>
             </div>
             
-            <label for="feverish">Температурящих:</label>
-            <div class="number-input-container">
-                <select id="feverish" name="feverish" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                </select>
-                <button type="button" class="decrement-btn" onclick="changeValue('feverish', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('feverish', 1)">+</button>
+            <div class="form-row">
+                <label for="outcome">Выписано:</label>
+                <div class="number-input-container">
+                    <select id="outcome" name="outcome" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                    <button type="button" class="decrement-btn" onclick="changeValue('outcome', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('outcome', 1)">+</button>
+                </div>
             </div>
             
-            <label for="fatal">Летальные:</label>
-            <div class="number-input-container">
-                <select id="fatal" name="fatal" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                </select>
-                <button type="button" class="decrement-btn" onclick="changeValue('fatal', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('fatal', 1)">+</button>
+            <div class="form-row">
+                <label for="severe">Тяжелых:</label>
+                <div class="number-input-container">
+                    <select id="severe" name="severe" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                    <button type="button" class="decrement-btn" onclick="changeValue('severe', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('severe', 1)">+</button>
+                </div>
             </div>
             
-            <label for="compulsory">Принудительное лечение:</label>
-            <div class="number-input-container">
-                <select id="compulsory" name="compulsory" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                </select>
-                <button type="button" class="decrement-btn" onclick="changeValue('compulsory', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('compulsory', 1)">+</button>
+            <div class="form-row">
+                <label for="feverish">Температурящих:</label>
+                <div class="number-input-container">
+                    <select id="feverish" name="feverish" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                    <button type="button" class="decrement-btn" onclick="changeValue('feverish', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('feverish', 1)">+</button>
+                </div>
             </div>
             
-            <label for="dangerous">Социально опасные:</label>
-            <div class="number-input-container">
-                <select id="dangerous" name="dangerous" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                </select>
-                <button type="button" class="decrement-btn" onclick="changeValue('dangerous', -1)">-</button>
-                <button type="button" class="increment-btn" onclick="changeValue('dangerous', 1)">+</button>
+            <div class="form-row">
+                <label for="fatal">Летальные:</label>
+                <div class="number-input-container">
+                    <select id="fatal" name="fatal" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                    <button type="button" class="decrement-btn" onclick="changeValue('fatal', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('fatal', 1)">+</button>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <label for="compulsory">Принуд. лечение:</label>
+                <div class="number-input-container">
+                    <select id="compulsory" name="compulsory" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                    <button type="button" class="decrement-btn" onclick="changeValue('compulsory', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('compulsory', 1)">+</button>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <label for="dangerous">Соц. опасные:</label>
+                <div class="number-input-container">
+                    <select id="dangerous" name="dangerous" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                    <button type="button" class="decrement-btn" onclick="changeValue('dangerous', -1)">-</button>
+                    <button type="button" class="increment-btn" onclick="changeValue('dangerous', 1)">+</button>
+                </div>
             </div>
             
             <button type="submit" id="submitBtn">Отправить</button>
@@ -402,7 +460,7 @@
             val += delta;
             if (val < 0) val = 0;
             
-            // Для select элементов (income, outcome) динамически добавляем новую опцию, если значение > 15
+            // Для select элементов динамически добавляем новую опцию, если значение > 15
             if (element.tagName === 'SELECT' && val > 15) {
                 const existingOptions = Array.from(element.options).map(opt => parseInt(opt.value));
                 if (!existingOptions.includes(val)) {
