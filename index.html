@@ -1,4 +1,3 @@
-<!-- User form HTML (save as user_form.html and host on GitHub) -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -38,23 +37,30 @@
         }
         input, select {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
             font-size: 16px;
+            height: 38px;
         }
         .number-input-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            margin-bottom: 15px;
         }
-        .number-input-container select, .number-input-container input {
+        .number-input-container input,
+        .number-input-container select {
             flex-grow: 1;
+            height: 38px;
+            padding: 8px;
+            margin-bottom: 0;
+            line-height: 20px;
         }
         button {
-            padding: 10px 15px;
+            padding: 8px 15px;
             border: none;
             border-radius: 5px;
             background-color: #007bff;
@@ -62,16 +68,21 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s;
+            box-sizing: border-box;
         }
         button:hover {
             background-color: #0056b3;
         }
         .increment-btn, .decrement-btn {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 38px;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 0;
+            line-height: 38px;
+            font-size: 18px;
+            vertical-align: middle;
         }
         #submitBtn, #viewPrevBtn {
             width: 100%;
@@ -97,6 +108,18 @@
             }
             input, select, button {
                 font-size: 14px;
+            }
+            .number-input-container input,
+            .number-input-container select {
+                height: 34px;
+                padding: 6px;
+                line-height: 18px;
+            }
+            .increment-btn, .decrement-btn {
+                width: 48px;
+                height: 34px;
+                line-height: 34px;
+                font-size: 16px;
             }
         }
     </style>
@@ -247,24 +270,7 @@
             
             <label for="compulsory">Принудительное лечение:</label>
             <div class="number-input-container">
-                <select id="compulsory" name="compulsory" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                </select>
+                <input type="number" id="compulsory" name="compulsory" min="0" value="0" required>
                 <button type="button" class="decrement-btn" onclick="changeValue('compulsory', -1)">-</button>
                 <button type="button" class="increment-btn" onclick="changeValue('compulsory', 1)">+</button>
             </div>
@@ -324,6 +330,11 @@
             if (lastConsists !== null) {
                 document.getElementById('consists').value = lastConsists;
             }
+
+            const lastCompulsory = localStorage.getItem('lastCompulsory');
+            if (lastCompulsory !== null) {
+                document.getElementById('compulsory').value = lastCompulsory;
+            }
         });
         
         const form = document.getElementById('reportForm');
@@ -333,13 +344,14 @@
             const respDiv = document.getElementById('response');
             const prevMessageDiv = document.getElementById('prevMessage');
             respDiv.innerText = 'Сообщение отправляется...';
-            prevMessageDiv.innerText = ''; // Сворачиваем прошлое сообщение
+            prevMessageDiv.innerText = '';
             
             const formData = new FormData(form);
             const params = new URLSearchParams(formData);
             
             localStorage.setItem('lastUnit', document.getElementById('unit').value);
             localStorage.setItem('lastConsists', document.getElementById('consists').value);
+            localStorage.setItem('lastCompulsory', document.getElementById('compulsory').value);
             
             fetch(appsScriptUrl, {
                 method: 'POST',
@@ -350,7 +362,7 @@
                 if (text === 'OK') {
                     const formattedDate = formatDateToDDMMYYYY(document.getElementById('date').value);
                     respDiv.innerText = `Сообщение отправлено:\nдата: ${formattedDate}\nподразделение: ${document.getElementById('unit').value}\nсостоит: ${document.getElementById('consists').value}\nпоступило: ${document.getElementById('income').value}\nвыписано: ${document.getElementById('outcome').value}\nтяжелых: ${document.getElementById('severe').value}\nтемпературящих: ${document.getElementById('feverish').value}\nлетальные: ${document.getElementById('fatal').value}\nпринудительное лечение: ${document.getElementById('compulsory').value}\nсоциально опасные: ${document.getElementById('dangerous').value}`;
-                    respDiv.scrollIntoView({ behavior: 'smooth' }); // Смещаем фокус к низу формы
+                    respDiv.scrollIntoView({ behavior: 'smooth' });
                 } else {
                     respDiv.innerText = 'Ошибка при отправке сообщения';
                 }
@@ -373,19 +385,16 @@
             .then(data => {
                 const row = data.find(row => row["подразделение"] === selectedUnit);
                 if (row) {
-                    // Корректируем дату с учётом часового пояса (+05:00)
                     const rawDate = row["Дата"];
                     let formattedDate;
                     if (rawDate.includes('T')) {
                         const date = new Date(rawDate);
-                        // Добавляем смещение +05:00 (5 часов = 5 * 60 * 60 * 1000 миллисекунд)
                         date.setTime(date.getTime() + 5 * 60 * 60 * 1000);
                         formattedDate = formatDateToDDMMYYYY(date);
                     } else {
-                        // Если дата уже в формате YYYY-MM-DD
                         formattedDate = formatDateToDDMMYYYY(rawDate);
                     }
-                    prevMessageDiv.innerText = `Последнее сообщение:\nдата: ${formattedDate}\nподразделение: ${row["подразделение"]}\nсостоит: ${row["состоит"]}\nпоступило: ${row["поступило"]}\nвыписано: ${row["выбыло"]}\nтяжелых: ${row["тяжелых"]}\nтемпературящих: ${row["температурящих"]}\nлетальные: ${row["летальные"]}\nпринудительное лечение: ${row["принудительное лечение"]}\nсоциально опасные: ${row["социально опасные"]}`;
+                    prevMessageDiv.innerText = `Последнее сообщение:\nдата: ${formattedDate}\nподразделение: ${row["подразделение"]}\nсостоит: ${row["состоит"]}\nпоступило: ${row["поступило"]}\nвыбыло: ${row["выбыло"]}\nтяжелых: ${row["тяжелых"]}\nтемпературящих: ${row["температурящих"]}\nлетальные: ${row["летальные"]}\nпринудительное лечение: ${row["принудительное лечение"]}\nсоциально опасные: ${row["социально опасные"]}`;
                 } else {
                     prevMessageDiv.innerText = `Нет данных для подразделения ${selectedUnit}`;
                 }
@@ -402,7 +411,6 @@
             val += delta;
             if (val < 0) val = 0;
             
-            // Для select элементов (income, outcome) динамически добавляем новую опцию, если значение > 15
             if (element.tagName === 'SELECT' && val > 15) {
                 const existingOptions = Array.from(element.options).map(opt => parseInt(opt.value));
                 if (!existingOptions.includes(val)) {
@@ -418,4 +426,3 @@
     </script>
 </body>
 </html>
-
